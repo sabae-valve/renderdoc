@@ -1220,6 +1220,11 @@ struct AndroidController : public IDeviceProtocolHandler
       for(Android::ABI abi : abis)
         Android::adbExecCommand(deviceID, "shell am force-stop " + GetRenderDocPackageForABI(abi));
 
+      // Attempt to prevent the user needing to click through on permissions
+      for(Android::ABI abi : abis)
+        Android::adbExecCommand(deviceID, "shell pm grant " + GetRenderDocPackageForABI(abi) + " android.permission.MANAGE_EXTERNAL_STORAGE");
+
+
       Android::adbForwardPorts(dev.portbase, deviceID, 0, 0, false);
       Android::ResetCaptureSettings(deviceID);
 
